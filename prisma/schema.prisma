@@ -6,3 +6,48 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  password      String
+  ownedChannels Channel[] @relation("OwnedChannels")
+  channels      Channel[]
+  messages      Message[]
+
+  @@map("users")
+}
+
+model Channel {
+  id         Int         @id @default(autoincrement())
+  name       String?
+  type       ChannelType
+  owner      User?       @relation("OwnedChannels", fields: [ownerId], references: [id])
+  ownerId    Int?        @map("owner_id")
+  recipients User[]
+  messages   Message[]
+
+  @@map("channels")
+}
+
+model Message {
+  id        Int       @id @default(autoincrement())
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz()
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int       @map("author_id")
+  channel   Channel   @relation(fields: [channelId], references: [id])
+  channelId Int       @map("channel_id")
+  replyTo   Message?  @relation("MessageReplies", fields: [replyToId], references: [id])
+  replyToId Int?      @map("reply_to_id")
+  replies   Message[] @relation("MessageReplies")
+
+  @@map("messages")
+}
+
+enum ChannelType {
+  DM
+  GROUP
+}
