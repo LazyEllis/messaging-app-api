@@ -49,7 +49,7 @@ const replyToIdValidator = [
         );
       }
     })
-    .optional({ values: null }),
+    .optional({ values: "null" }),
 ];
 
 export const validateChannelId = validate(channelIdValidator);
