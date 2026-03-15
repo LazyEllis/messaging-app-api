@@ -28,6 +28,12 @@ export const listChannelMessages = async (req, res) => {
         select: {
           id: true,
           content: true,
+          author: {
+            omit: {
+              email: true,
+              password: true,
+            },
+          },
         },
       },
     },
@@ -63,6 +69,12 @@ export const getMessage = async (req, res) => {
         select: {
           id: true,
           content: true,
+          author: {
+            omit: {
+              email: true,
+              password: true,
+            },
+          },
         },
       },
     },
@@ -105,6 +117,12 @@ export const createMessage = async (req, res) => {
         select: {
           id: true,
           content: true,
+          author: {
+            omit: {
+              email: true,
+              password: true,
+            },
+          },
         },
       },
     },
@@ -161,6 +179,12 @@ export const updateMessage = async (req, res) => {
         select: {
           id: true,
           content: true,
+          author: {
+            omit: {
+              email: true,
+              password: true,
+            },
+          },
         },
       },
     },
