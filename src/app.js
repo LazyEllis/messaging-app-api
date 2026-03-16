@@ -7,6 +7,7 @@ import authRouter from "./routes/authRouter.js";
 import channelRouter from "./routes/channelRouter.js";
 import recipientRouter from "./routes/recipientRouter.js";
 import messageRouter from "./routes/messageRouter.js";
+import indexRouter from "./routes/indexRouter.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/auth", authRouter);
 app.use("/channels", channelRouter);
 app.use("/channels/:channelId/recipients", recipientRouter);
 app.use("/channels/:channelId/messages", messageRouter);
+app.use("/", indexRouter);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
