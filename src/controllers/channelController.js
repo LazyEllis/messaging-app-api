@@ -29,6 +29,9 @@ export const listChannels = async (req, res) => {
         },
       },
     },
+    orderBy: {
+      id: "asc",
+    },
   });
 
   res.json(channels);

@@ -37,6 +37,9 @@ export const listChannelMessages = async (req, res) => {
         },
       },
     },
+    orderBy: {
+      createdAt: "asc",
+    },
   });
 
   res.json(messages);
