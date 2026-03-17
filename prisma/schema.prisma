@@ -38,7 +38,7 @@ model Message {
   updatedAt DateTime? @map("updated_at") @db.Timestamptz()
   author    User      @relation(fields: [authorId], references: [id])
   authorId  Int       @map("author_id")
-  channel   Channel   @relation(fields: [channelId], references: [id])
+  channel   Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId Int       @map("channel_id")
   replyTo   Message?  @relation("MessageReplies", fields: [replyToId], references: [id])
   replyToId Int?      @map("reply_to_id")
