@@ -33,11 +33,10 @@ This is a REST API for a messaging app. It allows users to send messages to each
     JWT_SECRET=your_secret_key
     ```
 
-4.  Run the database migrations and generate Prisma
+4.  Run the database migrations and generate prisma
 
     ```bash
-    npx prisma migrate dev
-    npx prisma generate
+    npm run build
     ```
 
 5.  Run the development server
