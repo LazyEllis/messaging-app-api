@@ -1,9 +1,9 @@
-import { Server } from "socket.io";
-import http from "node:http";
 import express from "express";
+import http from "node:http";
 import cors from "cors";
 import "dotenv/config";
 import "./lib/passport.js";
+import { init } from "./lib/socket.js";
 import userRouter from "./routes/userRouter.js";
 import authRouter from "./routes/authRouter.js";
 import channelRouter from "./routes/channelRouter.js";
@@ -13,12 +13,7 @@ import indexRouter from "./routes/indexRouter.js";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: process.env.FRONTEND_URL,
-    methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-  },
-});
+const io = init(server, { cors: { origin: process.env.FRONTEND_URL } });
 
 app.use(express.json());
 app.use(cors({ origin: process.env.FRONTEND_URL }));
@@ -33,18 +28,6 @@ app.use("/", indexRouter);
 io.on("connection", (socket) => {
   socket.on("join-channel", (channelId) => {
     socket.join(`channel-${channelId}`);
-  });
-
-  socket.on("send-message", (channelId, message) => {
-    socket.to(`channel-${channelId}`).emit("sent-message", message);
-  });
-
-  socket.on("edit-message", (channelId, message) => {
-    socket.to(`channel-${channelId}`).emit("edited-message", message);
-  });
-
-  socket.on("delete-message", (channelId, messageId) => {
-    socket.to(`channel-${channelId}`).emit("deleted-message", messageId);
   });
 
   socket.on("leave-channel", (channelId) => {

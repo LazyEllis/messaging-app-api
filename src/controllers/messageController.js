@@ -1,5 +1,6 @@
 import { ForbiddenError, NotFoundError } from "../lib/errors.js";
 import prisma from "../lib/prisma.js";
+import { getIo } from "../lib/socket.js";
 import { getChannel } from "../lib/utils.js";
 
 export const listChannelMessages = async (req, res) => {
@@ -131,6 +132,8 @@ export const createMessage = async (req, res) => {
     },
   });
 
+  getIo().to(`channel-${channelId}`).emit("sent-message", message);
+
   res.status(201).json(message);
 };
 
@@ -193,6 +196,8 @@ export const updateMessage = async (req, res) => {
     },
   });
 
+  getIo().to(`channel-${channelId}`).emit("edited-message", updatedMessage);
+
   res.json(updatedMessage);
 };
 
@@ -224,6 +229,8 @@ export const deleteMessage = async (req, res) => {
       id: messageId,
     },
   });
+
+  getIo().to(`channel-${channelId}`).emit("deleted-message", messageId);
 
   res.status(204).end();
 };
